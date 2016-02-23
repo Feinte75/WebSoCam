@@ -7,15 +7,16 @@ var i = 0;
 function init()
 {
   output = document.getElementById("output");
+  img = document.createElement("img");
+  output.appendChild(img);
+  imageCounter = document.createElement("p")
+  output.appendChild(imageCounter);
+
   testWebSocket();
 }
 
 function testWebSocket()
 {
-  img = document.createElement("img");
-  output.appendChild(img);
-  imageCounter = document.createElement("p")
-  output.appendChild(imageCounter);
   websocket = new WebSocket(wsUri);
   websocket.onopen = function(evt) { onOpen(evt) };
   websocket.onclose = function(evt) { onClose(evt) };
