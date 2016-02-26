@@ -1,23 +1,25 @@
 var wsUri = "ws://192.168.1.12/lua";
 var output;
-var img;
+var webcam;
+var streamControl;
 var imageCounter;
 var i = 0;
 
 function init()
 {
   output = document.getElementById("output");
-  img = document.createElement("img");
-  output.appendChild(img);
-  imageCounter = document.createElement("p")
-  output.appendChild(imageCounter);
+  webcam = document.getElementById("webcam");
+  streamControl = document.getElementById("stream-control");
+  imageCounter = document.getElementById("image-counter");
 
-  testWebSocket();
+  streamControl.addEventListener("click", startStreaming);
 }
 
-function testWebSocket()
+function startStreaming()
 {
+  console.log("Start websocket");
   websocket = new WebSocket(wsUri);
+  
   websocket.onopen = function(evt) { onOpen(evt) };
   websocket.onclose = function(evt) { onClose(evt) };
   websocket.onmessage = function(evt) { onMessage(evt) };
@@ -28,7 +30,7 @@ function onOpen(evt)
 {
   writeToScreen("CONNECTED");
   // Just send a message, anything, it'll start server streaming images
-  doSend("Start streaming !");
+  doSend("start", "Start streaming !");
 }
 
 function onClose(evt)
@@ -41,13 +43,11 @@ function onMessage(evt)
 {
   var reader = new FileReader();
   reader.addEventListener("loadend", function() {
-    img.src = "data:image/jpeg;base64," + reader.result;
-    console.log('Image loaded !' + reader.result)
+    webcam.src = "data:image/jpeg;base64," + reader.result;
     incrementImageCounter();
-    console.log('Image nb : '+ i);
+    console.log('Image nb : ' + i + ' loaded');
   });
   reader.readAsBinaryString(evt.data);
-
 }
 
 function incrementImageCounter() {
@@ -60,12 +60,11 @@ function onError(evt)
   writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
 }
 
-// Nothing important here, just experimented with json data sending with websocket
-function doSend(message)
+function doSend(type, message)
 {
-  writeToScreen("SENT: " + message);
+  writeToScreen("SEND type : " + type + " with message : " + message);
   msg = {
-    type: "ping",
+    type: type,
     text: message,
   }
   websocket.send(JSON.stringify(msg));

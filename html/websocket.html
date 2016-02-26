@@ -3,10 +3,28 @@
   <head>
     <meta charset="utf-8" />
     <title>WebSockam</title>
+    <link rel="stylesheet" type="text/css" href="websocam.css"/>
     <script src="websocket.js" language="javascript" type="text/javascript"></script>
   </head>
+  <body>
 
-  <h2>Raspicam MJpeg</h2>
+    <h2>Websocam</h2>
 
-  <div id="output"></div>
+    <header>
+    </header>
+
+    <div class="wrapper">
+      <section id="output">
+        <img id="webcam"></img>
+        <p id="image-counter"></p>
+      </section>
+
+      <section id="config-panel">
+        <button id="stream-control"> Start streaming ! </button>
+      </section>
+    </div>
+
+    <footer>
+    </footer>
+  </body>
 </html>
