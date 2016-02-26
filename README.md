@@ -1,5 +1,7 @@
-Raspicam streaming with Websocket and OpenResty
+Raspicam MJpeg streaming with Websocket, Redis and OpenResty
 
-Video capture is made with a Python script
+Continuous image capture is done with a Python script, jpeg images are sent to Redis
 
-Websocket communication is handled by a lua script
+On websocket client connect, a lua script recover the images from Redis and send them continuously to the client
+
+Client side images are recovered and embedded in an image tag as base64
